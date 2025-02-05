@@ -1,0 +1,55 @@
+.babka {
+    background-image: url('../../assets/1.jpg');
+    height: 500vh;
+    z-index: 9999;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-clip: padding-box;
+    padding-bottom: 100%;
+  }
+
+.profile-card {
+    width: 300px;
+    height: 300px;
+    font-size: 32px;
+    border: 5px solid lightgray;
+    border-radius: 15px;
+  }
+  .bab {
+    align-items: center;
+    justify-content: center;
+  }
+  .text-center {
+    color: white;
+    text-align: center !important;
+  }
+  .mb-3{
+    background-color: rgba(37, 37, 37, 0);
+  border: 3px solid rgba(37, 37, 37, 1);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  }
+  .babkovich{
+    background-image: url('../../assets/1.jpg');
+    align-items: center;
+    justify-content: center;
+    width: 10%;
+    height: 10%;
+    margin-left: 43%;
+    margin-bottom: 10px;
+    border-radius: 30%;
+  }
+  .babkovichLi{
+    width: auto;
+    height: auto;
+    max-width: 300px;
+    max-height: 300px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30%;
+  }

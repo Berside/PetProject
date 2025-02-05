@@ -1,0 +1,68 @@
+.babadyki {
+    background-image: url('../../assets/1.jpg');
+    height: 100vh;
+    z-index: 9999;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    padding-bottom: 0;
+  }
+  
+  .auth-form-card-1 {
+    width: 75vw !important;
+    min-height: 80vh;
+    padding: 20px;
+    background-color: rgba(37, 37, 37, 0.8);
+    border: 3px solid rgba(37, 37, 37, 1);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    overflow-y: auto;
+  }
+  
+  .auth-form-button {
+    margin-top: 15px;
+    background: #242424;
+    color: #fff;
+    box-shadow: 2px 0px 12px rgba(0, 0, 0, 0.1);
+    transition: .5s ease-in-out;
+  }
+  
+  textarea {
+    color: white;
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    resize: vertical;
+    overflow: visible;
+  }
+  
+  .pipi {
+    justify-content: center !important;
+    align-items: center !important;
+    display: flex !important;
+  }
+  .BABKA{
+    color: #fff;
+    margin-top: 15px;
+    background: rgba(36, 35, 35, 0.6);
+    backdrop-filter: blur(2px);
+    margin-bottom: 10PX;
+    width: 100%;
+    padding-right: 30px;
+  }
+  .babpict {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .pict {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: auto;
+    cursor: pointer;
+  }
