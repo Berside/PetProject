@@ -1,18 +1,19 @@
 import { observer } from 'mobx-react-lite';
-import React, {useContext, useEffect, useState} from 'react';
-import {Button, Card, CardImg, Col, Container, Row} from "react-bootstrap";
+import React, {useEffect, useState} from 'react';
+import {Button, Card, CardImg, CardTitle, Col, Container, Row} from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import { Context } from '../../index';
 import './profileOne.css';
-import { changePassword } from '../../http/userAPI';
-import { FetchUser } from '../../http/userAPI';
-import { ChangePhoto } from '../../http/userAPI';
+import { changePassword, getLikeBlogs,ChangePhoto,FetchUser} from '../../http/userAPI';
+import { fetchUserPOSTS } from '../../http/blogAPI';
+import userIcon from '../../assets/user.png'
+import { POST_ROUTE } from '../../utils/consts';
+import {useNavigate} from "react-router-dom";
 const ProfileOne = observer(() => {
   const bucketName = process.env.NEXT_PUBLIC_YANDEX_BUCKET_NAME || 'blogs-data/';
   const [OLD, setOLD] = useState('')
   const [NEW, setNEW] = useState('')
-
+  const history = useNavigate()
       const CLICKED = async () => {
         try {
             let data;
@@ -34,8 +35,7 @@ const ProfileOne = observer(() => {
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.accept = 'image/*';
-      
-        // Создаем промис для ожидания выбора файла
+
         const waitForFile = new Promise((resolve) => {
           fileInput.onchange = (e) => {
             const file = e.target.files[0];
@@ -43,7 +43,7 @@ const ProfileOne = observer(() => {
               setSelectedFile(file);
               const reader = new FileReader();
               reader.readAsDataURL(file);
-              resolve(file); // Разрешаем промис после установки состояния
+              resolve(file); 
             }
           };
         });
@@ -52,7 +52,6 @@ const ProfileOne = observer(() => {
       
         try {
           const selectedFile = await waitForFile;
-          console.log(selectedFile)
           await clicked(selectedFile);
         } catch (error) {
           alert(error.response?.message || 'Произошла ошибка при загрузке файла');
@@ -62,17 +61,17 @@ const ProfileOne = observer(() => {
       async function clicked(isd) {
         try {
           let data;
-          console.log(isd);
           data = await ChangePhoto(isd);
-          console.log(data)
         } catch (e) {
-          throw e; // Пробрасываем ошибку наверх для обработки
+          throw e; 
         }
       }
 
   const id = localStorage.getItem('id');
 
       const [user, setUSER] = useState({ info: [] });
+      const [fate, setFATE] = useState({ info: [] });
+      const [bate, setBATE] = useState({ info: [] });
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState(null);
       const date = new Date(user.created_at);
@@ -81,11 +80,14 @@ const ProfileOne = observer(() => {
       month: 'numeric',
       year: 'numeric'
       });
-      const imageUrl = `https://storage.yandexcloud.net/${bucketName}${user.pfp_path}`;
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const USERDATA1 = await FetchUser(id);
+                const Fate = await fetchUserPOSTS(id);
+                const Bate = await getLikeBlogs();
+                setBATE(Bate);
+                setFATE(Fate);
                 setUSER(USERDATA1);
             } catch (err) {
                 setError(err);
@@ -96,9 +98,6 @@ const ProfileOne = observer(() => {
 
         fetchData();
     }, [id]);
-
-    console.log(user);
-
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -115,7 +114,7 @@ const ProfileOne = observer(() => {
           </Col>
         </Row>
           <Card className='babkovich'> 
-                  <CardImg src={imageUrl} className='babkovichLi'></CardImg>
+                  <CardImg src={user?.pfp_path ? `https://storage.yandexcloud.net/${bucketName}${user.pfp_path}` : userIcon}  className='babkovichLi'></CardImg>
           </Card>
         <Row className='bab'>
           <Col md={4}>    
@@ -170,6 +169,45 @@ const ProfileOne = observer(() => {
             </Card>
           </Col>
         </Row>
+        {Array.isArray(fate) && fate.length > 0 && (
+       <Card className='Figu1'>
+       <CardTitle className='Figu2'> Посты пользователя</CardTitle>
+       <Card.Body className='Figu3'>
+         <h4 className='Figu4'>
+           {fate.map(item => (
+             <span
+               key={item.id}
+               onClick={() => history(`${POST_ROUTE}/${item.id}`)}
+               className="hoverUnderline"
+             >
+               {item.title.substring(0, 20)}
+               {fate.indexOf(item) === fate.length - 1 ? '' : ','}
+             </span>
+           ))}
+         </h4>
+       </Card.Body>
+     </Card>
+      )}
+
+      {Array.isArray(bate) && bate.length > 0 && (
+            <Card className='Figu11'>
+            <CardTitle className='Figu2'> Лайки пользователя</CardTitle>
+            <Card.Body className='Figu3'>
+              <h4 className='Figu4'>
+                {bate.map(item => (
+                  <span
+                    key={item.id}
+                    onClick={() => history(`${POST_ROUTE}/${item.id}`)}
+                    className="hoverUnderline"
+                  >
+                    {item.title.substring(0, 20)}
+                    {bate.indexOf(item) === bate.length - 1 ? '' : ','}
+                  </span>
+                ))}
+              </h4>
+            </Card.Body>
+          </Card>
+            )}
       </Container>
       </div>
             <Modal show={show} onHide={handleClose} className='abg'>
@@ -198,10 +236,10 @@ const ProfileOne = observer(() => {
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
-                Close
+                Отмена
               </Button>
               <Button variant="primary" onClick={CLICKED} >
-                Save Changes
+                Сохранить изменения
               </Button>
             </Modal.Footer>
           </Modal>

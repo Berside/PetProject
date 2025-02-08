@@ -24,7 +24,7 @@ const Bar = observer(() => {
         <div className='babadyk-1'>
         <Navbar bg="dark" data-bs-theme="dark" className="a">
         <Container>
-            <NavLink style={{color:'white'}} to={MAIN_ROUTE}>BlackWeather</NavLink>
+            <NavLink style={{color:'white'}} to={MAIN_ROUTE} className='bidir'>BlackWeather</NavLink>
             {user.isAuth && user.isAdmin ? (
              <Nav className="ml-auto d-flex align-items-center" style={{color:'white'}}>
                 <h1 className="ml-5"> Admin mode </h1>

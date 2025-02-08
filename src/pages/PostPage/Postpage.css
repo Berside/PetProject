@@ -35,6 +35,10 @@
     backdrop-filter: blur(5px);
     overflow: hidden;
   }
+  .pipka:focus {
+    color: white !important;
+    outline: none;
+  }
   .pipka::placeholder{
     color: white;
   }
@@ -44,10 +48,41 @@
   .tatle{
     margin-top: 50px;
   }
-  .pfuck{
-    border-radius: 5%;
-    max-width: 50%;
-    max-height: 50%;
+  .image-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .pfuck {
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .pfuck:hover {
+    transform: scale(1.05);
+  }
+  
+  @media (max-width: 768px) {
+    .image-container {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      padding: 10px;
+    }
+    
+    .pfuck {
+      border-radius: 6px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .image-container {
+      grid-template-columns: 1fr;
+    }
   }
   .commentImg{
     margin-top: 5px;
@@ -56,6 +91,112 @@
     border-radius: 50%;
     cursor: pointer;
   }
+  .commentImg:hover{
+    border: 3px solid rgb(255, 255, 255);
+    transform: scale(1.1);
+  }
   .fdsa{
     margin-left: 10px;
   }
+.kraki{
+  margin-top: 20px;
+  width: 100%;
+  padding: 20px;
+  background-color: rgba(37, 37, 37, 0);
+  border: 3px solid rgba(37, 37, 37, 1);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  overflow: hidden;
+  color: white;
+}
+
+.FigVam{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.pipka{
+  color: #fff;
+  margin-top: 15px;
+  background: rgba(36, 35, 35, 0.6);
+  backdrop-filter: blur(2px);
+  margin-bottom: 10PX;
+  height: 50px;
+  width: 100%;
+  padding-right: 30px;
+}
+.irudit{
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: auto;
+  cursor: pointer;
+}
+.pipka:focus {
+  background-color: inherit;
+  box-shadow: none;
+}
+.textovik:hover {
+  text-decoration: underline;
+}
+
+.cardbodyADM{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tatleADM{
+  margin-bottom: 0;
+}
+.adminImageADM{
+  cursor: pointer;
+  height: auto;
+  max-height: 24px;
+}
+.adminImageADM:hover{
+  transform: scale(1.1);
+}
+
+.textovil {
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.textovil:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.textovil span {
+  margin: 0 0 15px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-muted, #666666);
+}
+
+.textovil img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.textovil img:hover {
+  transform: scale(1.1);
+  filter: brightness(110%);
+}
+
+.textovil img.active {
+  filter: brightness(120%);
+}
+
+.textovil .likes-count {
+  display: inline-block;
+  margin-right: 15px;
+  font-weight: 500;
+  color: var(--text-primary, #333333);
+}

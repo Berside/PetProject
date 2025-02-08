@@ -6,8 +6,9 @@
         throw new Error('Токен не найден в локальном хранилище');
         }
         if(selectedFile) {
-            console.log(selectedFile);
-            formData.append('images', selectedFile);
+            for (const file of selectedFile) {
+                formData.append('images', file);
+            }
         }
         try {
             const data = await $authHost.post('v1/blog/create', formData, {
@@ -48,6 +49,42 @@
         return data.data;
     }
 
+    export const fetchUserPOSTS = async (UserId) => {
+        const {data} = await $host.get('v1/blog/getMany', {
+            params: {
+                owner_id: UserId
+            }
+        })
+        return data.data
+    }
 
 
-    const BUCKET_NAME = "blogs-data"
+    export const DeleteBlog = async (blog_id) => {
+        try {
+            const {data} = await $authHost.delete('v1/blog/delete', {
+                params: {
+                    blog_id: blog_id
+                }
+            })
+            return data;   
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    export const AddLikePost = async (blog_id) => {
+        try {
+            const {data} = await $authHost.patch(`v1/blog/toggleLike?blog_id=${blog_id}`)
+            return data;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    export const likedBy = async (blog_id) => {
+        const {data} = await $host.get('v1/blog/likedBy', {
+            params: {
+                blog_id: blog_id
+            }
+        })
+        return data.data
+    }

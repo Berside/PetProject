@@ -1,13 +1,12 @@
 import { observer } from 'mobx-react-lite';
-import React, {useContext, useEffect, useState} from 'react';
-import {Button, Card, CardImg, Col, Container, Row} from "react-bootstrap";
-import Form from 'react-bootstrap/Form';
-import { Context } from '../../index';
-import { changePassword } from '../../http/userAPI';
-import { FetchUser } from '../../http/userAPI';
-import { ChangePhoto } from '../../http/userAPI';
+import React, {useEffect, useState} from 'react';
+import {Card, CardImg, Col, Container, Row} from "react-bootstrap";
+import { FetchUser, getLikeBlogs } from '../../http/userAPI';
 import {useParams} from 'react-router-dom'
 import userIcon from '../../assets/user.png'
+import { fetchUserPOSTS } from '../../http/blogAPI';
+import { POST_ROUTE } from '../../utils/consts';
+import {useNavigate} from "react-router-dom";
 import './UserProfile.css';
 const UserProfile = observer(() => {
     const bucketName = process.env.NEXT_PUBLIC_YANDEX_BUCKET_NAME || 'blogs-data/';
@@ -15,11 +14,19 @@ const UserProfile = observer(() => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { id } = useParams();
+    const history = useNavigate()
+    const [fate, setFATE] = useState({ info: [] });
+    const [bate, setBATE] = useState({ info: [] });
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const userData = await FetchUser(id);
                 setUser(userData);
+                const Fate = await fetchUserPOSTS(id);
+                setFATE(Fate);
+                const Bate = await getLikeBlogs();
+                setBATE(Bate);
             } catch (err) {
                 setError(err);
             } finally {
@@ -89,8 +96,28 @@ const UserProfile = observer(() => {
               </Card>
             </Col>
           </Row>
+          {Array.isArray(fate) && fate.length > 0 && (
+       <Card className='Figu1'>
+       <Card.Title className='Figu2'> Посты пользователя</Card.Title>
+       <Card.Body className='Figu3'>
+         <h4 className='Figu4'>
+           {fate.map(item => (
+             <span
+               key={item.id}
+               onClick={() => history(`${POST_ROUTE}/${item.id}`)}
+               className="hoverUnderline"
+             >
+               {item.title.substring(0, 20)}
+               {fate.indexOf(item) === fate.length - 1 ? '' : ','}
+             </span>
+           ))}
+         </h4>
+       </Card.Body>
+     </Card>
+      )}
         </Container>
         </div>
+
             </>
       );
 })

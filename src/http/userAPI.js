@@ -27,17 +27,8 @@ export const changePassword = async (old_password, new_password) => {
     if (!token) {
       throw new Error('Токен не найден в локальном хранилище');
     }
-    const response = await $host.patch('v1/user/changePassword', 
-      { old_password, new_password },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      }
-    );
+    const response = await $authHost.patch('v1/user/changePassword', { old_password, new_password });
     const bab = localStorage.getItem('token');
-    console.log(bab);
     return response.data.message;
   } catch (error) {
     console.error('Ошибка при изменении пароля:', error.response?.data || error.message);
@@ -49,15 +40,11 @@ export const ChangePhoto = async (image) => {
 
   const formData = new FormData();
   if(image) {
-      console.log(image);
       formData.append('pfp', image);
-      console.log(formData.get('pfp'));
   }
   
   try{
-      const response = await $authHost.patch('v1/user/change_pfp', formData);
-      console.log(formData);
-      console.log('Успешный ответ:', response.data);
+      const response = await $authHost.patch('v1/user/changePfp', formData);
       return response;
   } catch (error) {
       if (error.response) {
@@ -84,6 +71,10 @@ export const check = async () => {
     return data;
 }
 
+export const getLikeBlogs = async () => {
+  const {data} = await $authHost.get('v1/user/getLikedBlogs')
+  return data.data;
+}
 
 export const FetchUser = async (UserId) => {
   const {data} = await $host.get('v1/user/getOne', {
@@ -93,4 +84,13 @@ export const FetchUser = async (UserId) => {
   }
 )
   return data.data;
+}
+
+export const GETadmin = async (Code) => {
+  try{
+    const { data } = await $authHost.patch(`v1/user/getAdmin?code=${Code}`);
+    return data;
+  } catch(error) {
+    console.log(error)
+  }
 }

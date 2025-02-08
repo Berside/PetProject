@@ -30,10 +30,16 @@
 }
 .aaa {
     cursor: pointer;
-    height: auto; /* Убираем фиксированную высоту */
-    width: auto; /* Убираем фиксированную ширину */
-    max-width: 32px; /* Ограничиваем максимальную ширину */
-    max-height: 32px; /* Ограничиваем максимальную высоту */
-    margin-left: 10%; /* Сохраняем отступ слева */
-    object-fit: contain; /* Обеспечиваем корректное масштабирование */
+    height: auto; 
+    width: auto; 
+    max-width: 32px; 
+    max-height: 32px;
+    margin-left: 10%; 
+    object-fit: contain; 
+  }
+  .aaa:hover {
+    transform: scale(1.1);
+  }
+  .bidir:hover{
+    transform: scale(1.1);
   }
