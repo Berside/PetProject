@@ -1,6 +1,5 @@
 import {$authHost, $host} from "./index";
 import { jwtDecode } from "jwt-decode";
-
 export const registration = async (username, email, password) => {
     try {
       const {data} = await $host.post('v1/auth/register', {username, email, password})
@@ -66,10 +65,14 @@ export const ChangePhoto = async (image) => {
 
 
 export const check = async () => {
-    const {data} = await $authHost.get('v1/user/current')
-    localStorage.setItem('id', data.data.id)
+  try {
+    const { data } = await $authHost.get('v1/user/current');
+    localStorage.setItem('id', data.data.id);
     return data;
-}
+  } catch (error) {
+    console.error('Ошибка при проверке пользователя:', error);
+  }
+};
 
 export const getLikeBlogs = async () => {
   const {data} = await $authHost.get('v1/user/getLikedBlogs')
@@ -77,13 +80,17 @@ export const getLikeBlogs = async () => {
 }
 
 export const FetchUser = async (UserId) => {
-  const {data} = await $host.get('v1/user/getOne', {
+  try {
+    const {data} = await $host.get('v1/user/getOne', {
       params: {
           id: UserId  
+          }
       }
+    )
+    return data.data;
+  } catch (error) {
+    console.error('Ошибка при проверке пользователя:', error);
   }
-)
-  return data.data;
 }
 
 export const GETadmin = async (Code) => {

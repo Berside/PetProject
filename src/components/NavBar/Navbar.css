@@ -43,3 +43,7 @@
   .bidir:hover{
     transform: scale(1.1);
   }
+  .kaktak{
+    margin-left: 5px;
+    font-size: 16px;
+  }

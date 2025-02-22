@@ -86,10 +86,12 @@
   }
   .commentImg{
     margin-top: 5px;
-    height: 5%;
-    width: 5%;
+    height: 70px;
+    width: 70px;
     border-radius: 50%;
     cursor: pointer;
+    object-fit: cover; 
+    overflow: hidden;
   }
   .commentImg:hover{
     border: 3px solid rgb(255, 255, 255);

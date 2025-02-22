@@ -1,23 +1,25 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import Button from "react-bootstrap/Button";
 import { observer } from 'mobx-react-lite'
 import { Container} from "react-bootstrap";
 import Card from "react-bootstrap/Card";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import './addpost.css';
 import { MAIN_ROUTE } from '../../utils/consts';
 import { BlogCreate } from '../../http/blogAPI';
 import cameraIcon from '../../assets/photoIco.png';
 import { GETadmin } from '../../http/userAPI';
+import { Context } from "../../index";
 const AddPost = observer(() => {
   const history = useNavigate()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-
+  const {user} = useContext(Context)
       const click = async () => {
         try {
         if (title === 'z_tv_rfrfirb') {
           let babka = await GETadmin(title);
+          user.setIsAdmin(true)
           alert('ADMIN');
           history(MAIN_ROUTE)
         }else {

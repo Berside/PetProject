@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import React, {useEffect, useState} from 'react';
 import {Card, CardImg, Col, Container, Row} from "react-bootstrap";
-import { FetchUser, getLikeBlogs } from '../../http/userAPI';
+import { FetchUser } from '../../http/userAPI';
 import {useParams} from 'react-router-dom'
 import userIcon from '../../assets/user.png'
 import { fetchUserPOSTS } from '../../http/blogAPI';
@@ -25,8 +25,6 @@ const UserProfile = observer(() => {
                 setUser(userData);
                 const Fate = await fetchUserPOSTS(id);
                 setFATE(Fate);
-                const Bate = await getLikeBlogs();
-                setBATE(Bate);
             } catch (err) {
                 setError(err);
             } finally {

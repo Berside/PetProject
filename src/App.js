@@ -5,24 +5,41 @@ import { observer } from 'mobx-react-lite';
 import {check} from "./http/userAPI";
 import {Spinner} from "react-bootstrap";
 import { Context } from './index';
+
 const App = observer(() => {
-  const {user} = useContext(Context)
-  const [loading, setLoading] = useState(true)
+  const {user} = useContext(Context);
+  const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem('token');
   useEffect(() => {
-      check().then(data => {
-          user.setUser(true)
-          user.setIsAuth(true)
-      }).finally(() => setLoading(false))
-  }, [])
+    const initializeAuth = async () => {
+      if ( token !== null ) {
+        try {
+          const response = await check();
+          if (response?.data) {
+            user.setUser(response.data);
+            user.setIsAuth(true);
+          }
+        } catch (error) {
+          console.error('Ошибка при проверке пользователя:', error);
+          user.setIsAuth(false); 
+        } finally {
+          setLoading(false);
+        }
+      }
+      setLoading(false);
+    };
+    initializeAuth();
+  }, []); 
 
   if (loading) {
-      return <Spinner animation={"grow"}/>
+    return <Spinner animation="grow"/>;
   }
+
   return (
-      <div>
-        <Bar/> 
-        <AppRouter />
-      </div>
+    <div>
+      <Bar/>
+      <AppRouter/>
+    </div>
   );
 });
 

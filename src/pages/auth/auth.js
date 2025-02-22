@@ -15,18 +15,43 @@ const Auth = observer(() => {
     const location = useLocation()
     const history = useNavigate()
     const isLogin = location.pathname === LOGIN_ROUTE
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
 
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    const usernameRegex = /^[0-9A-Za-z]{4,}$/;
+    const passwordRegex = /.{8,}/;
+
+    const validateField = (value, regex) => {
+      return regex.test(value);
+    };
+
     const click = async () => {
       try {
+          if (!isLogin && !validateField(username, usernameRegex)) {
+            alert('Имя пользователя должно быть минимум 4 символа и содержать только буквы и цифры');
+            return;
+        }
+        
+        if (!validateField(email, emailRegex)) {
+            alert('Введите корректный email адрес');
+            return;
+        }
+
+        if (!validateField(password, passwordRegex)) {
+            alert('Пароль должен быть минимум 8 символов');
+            return;
+        }
           let data;
           if (isLogin) {
               data = await login(email, password);
               user.setUser(user)
               user.setIsAuth(true)
+              console.log('TRUE')
               history(MAIN_ROUTE)
+              // window.location.reload();
           } else {
               data = await registration(username, email, password);
               try {

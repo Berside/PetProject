@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { CardImg, Col, Container, Row } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 import { Card } from 'react-bootstrap';
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams, useLocation} from "react-router-dom";
 import { FetchPost, FetchPostComments, DeleteBlog, AddLikePost, likedBy } from '../../http/blogAPI';
 import { CommentCreate, DeleteComment } from '../../http/CommentAPI';
 import './Postpage.css';
@@ -17,6 +17,7 @@ import Liked from '../../assets/Liked.png'
 import Unliked from '../../assets/Unliked.png'
 import { Context } from "../../index";
 const PostPage = observer(() => {
+    const location = useLocation();
     const {user} = useContext(Context)
     const IDE = localStorage.getItem('id');
     const bucketName = process.env.NEXT_PUBLIC_YANDEX_BUCKET_NAME || 'blogs-data/';
@@ -30,16 +31,21 @@ const PostPage = observer(() => {
     const { id } = useParams();
     const [UserText, setUserText] = useState('')
     useEffect(() => {
+        if  ( userbase.role === 'admin' ) {
+            user.setIsAdmin(true)
+        }
         const fetchData = async () => {
             try {
                 const postData = await FetchPost(id);
                 setPost(postData);
                 const commentsData = await FetchPostComments(id);
                 setComments(commentsData);
-                const UserData = await FetchUser(IDE);
-                setuserbase(UserData);
-                const LidDATA = await likedBy(id);
-                SetlikedBase(LidDATA);
+                if (user.isAuth) {
+                    const UserData = await FetchUser(IDE);
+                    setuserbase(UserData);
+                    const LidDATA = await likedBy(id);
+                    SetlikedBase(LidDATA);
+                }
             } catch (err) {
                 setError(err);
             } finally {
@@ -85,14 +91,14 @@ const PostPage = observer(() => {
     const toggleLikeBy = async (postId) => {
         try {
             const isLiked = likedBase.some(item => item.id === Number(IDE));
+            await AddLikePost(postId);
             setPost(prev => ({...prev, likes: prev.likes + (isLiked ? -1 : 1)}));
             SetlikedBase(prev =>
                 isLiked
-                  ? prev.filter(item => item.id !== Number(IDE))
-                  : [...prev, { id: IDE }]
-              );
-            await AddLikePost(postId);
-            history(POST_ROUTE + '/' + postId);
+                    ? prev.filter(item => item.id !== Number(IDE))
+                    : [...prev, { id: IDE }]
+            );
+            window.location.reload();
         } catch (error) {
             alert(error.message || 'Ошибка при добавлении лайка');
         }

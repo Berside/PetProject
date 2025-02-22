@@ -16,9 +16,14 @@ const Bar = observer(() => {
     const {user} = useContext(Context)
     const history = useNavigate()
     const logOut = () => {
+        localStorage.removeItem('id');
+        localStorage.removeItem('token');
+        localStorage.removeItem('IISaUTH');
         user.setUser({})
+        user.setIsAdmin(false)
         user.setIsAuth(false)
         history(LOGIN_ROUTE)
+        window.location.reload();
     }
     return (
         <div className='babadyk-1'>
@@ -27,7 +32,7 @@ const Bar = observer(() => {
             <NavLink style={{color:'white'}} to={MAIN_ROUTE} className='bidir'>BlackWeather</NavLink>
             {user.isAuth && user.isAdmin ? (
              <Nav className="ml-auto d-flex align-items-center" style={{color:'white'}}>
-                <h1 className="ml-5"> Admin mode </h1>
+                <h1 className="kaktak"> Admin mode </h1>
                 <img src={edit} onClick={() => history(ADD_POST_ROUTE)} className="aaa" alt='Написать пост'/>
                 <img src={userprof} onClick={() => history(PROFILE_ROUTE)} className="aaa"  alt='Ваш профиль' /> 
                 <img src={cross} onClick={() => logOut()} className="aaa"  alt='Выйти' />
@@ -40,7 +45,7 @@ const Bar = observer(() => {
             </Nav>
         ) : (
             <Nav className="ml-auto" style={{color:'white'}}>
-                <Button variant={'outline-light'} onClick={() => history(LOGIN_ROUTE)}> Авторизация </Button>
+                <Button variant={'outline-light'} onClick={() => {history(LOGIN_ROUTE)}}> Авторизация </Button>
             </Nav>
         )}
         </Container>
