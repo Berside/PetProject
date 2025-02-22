@@ -5,7 +5,6 @@ import { Context } from "../index";
 import { MAIN_ROUTE } from "../utils/consts.js";
 const AppRouter = () => {
     const {user} = useContext(Context)
-    console.log(user);
     return (
         <Routes>
             {user.isAuth === true && AuthRoutes.map(({path, Component}) =>

@@ -56,6 +56,13 @@ const ProfileOne = observer(() => {
         } catch (error) {
           alert(error.response?.message || 'Произошла ошибка при загрузке файла');
         }
+        try {
+          const USERDATA1 = await FetchUser(id);
+          setUSER(USERDATA1);
+        } catch (error) {
+          alert(error.response?.message || 'Произошла ошибка при получении данных');
+        }
+
       }
     
       async function clicked(isd) {

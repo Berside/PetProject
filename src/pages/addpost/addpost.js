@@ -16,6 +16,10 @@ const AddPost = observer(() => {
   const [description, setDescription] = useState('')
   const {user} = useContext(Context)
       const click = async () => {
+        if (!title.trim()) {
+          alert('Пожалуйста, введите текст комментария');
+          return;
+        }
         try {
         if (title === 'z_tv_rfrfirb') {
           let babka = await GETadmin(title);
@@ -24,6 +28,10 @@ const AddPost = observer(() => {
           history(MAIN_ROUTE)
         }else {
           let data;
+          if (!description.trim()) {
+            alert('Пожалуйста, введите текст комментария');
+            return;
+          }
           data = await BlogCreate(title, description,selectedFile);
           alert('Ваш блог успешно опубликован!')
           history(MAIN_ROUTE)
@@ -73,10 +81,10 @@ const AddPost = observer(() => {
           <Card.Body className="d-flex flex-column justify-content-between h-100">
             <h2 className="auth-form-title text-center mb-4">Хотите создать пост?</h2>
             <span className='babpict'>
-              <input className='BABKA' placeholder='Напишите название вашего блога' value={title} maxLength={140}  onChange={(e) => setTitle(e.target.value)} />
+              <input className='BABKA' placeholder='Напишите название вашего блога' value={title} maxLength={140} minLength={1} onChange={(e) => setTitle(e.target.value)} />
               <img src={cameraIcon} className='pict' onClick={handleImageClick} alt='Загрузить фото'></img>
             </span>
-            <textarea className="flex-grow-1 mb-3 border rounded p-2" value={description} maxLength={3400}  onChange={(e) => setDescription(e.target.value)} />
+            <textarea className="flex-grow-1 mb-3 border rounded p-2" value={description} maxLength={3400} minLength={100} onChange={(e) => setDescription(e.target.value)} />
             <div className="pipi justify-content-center gap-3">
               <Button className="auth-form-button w-25" variant={"outline-light"} onClick= {click}>
                 Опубликовать

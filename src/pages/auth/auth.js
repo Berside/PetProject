@@ -49,9 +49,8 @@ const Auth = observer(() => {
               data = await login(email, password);
               user.setUser(user)
               user.setIsAuth(true)
-              console.log('TRUE')
               history(MAIN_ROUTE)
-              // window.location.reload();
+              window.location.reload();
           } else {
               data = await registration(username, email, password);
               try {

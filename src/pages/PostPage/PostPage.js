@@ -79,15 +79,19 @@ const PostPage = observer(() => {
     }
     const click = async () => {
         try {
-            let data;
-                data = await CommentCreate(UserText, id);
-                const commentsData = await FetchPostComments(id);
-                setComments(commentsData);
-                setUserText('');
+          if (!UserText.trim()) {
+            alert('Пожалуйста, введите текст комментария');
+            return;
+          }
+          let data;
+          data = await CommentCreate(UserText, id);
+          const commentsData = await FetchPostComments(id);
+          setComments(commentsData);
+          setUserText('');
         } catch (e) {
-            alert(e.response.message)
+          alert(e.response.message);
         }
-    }
+      };
     const toggleLikeBy = async (postId) => {
         try {
             const isLiked = likedBase.some(item => item.id === Number(IDE));
@@ -161,6 +165,7 @@ const PostPage = observer(() => {
                     aria-describedby="basic-addon2"
                     value={UserText}
                     onChange={(e) => setUserText(e.target.value)}
+                    minLength={1}
                     />
                     <img src={strelka} className='irudit 'onClick= {click}></img>
                 </span>
