@@ -18,8 +18,19 @@ const AddPost = observer(() => {
       const click = async () => {
         if (!title.trim()) {
           alert('Пожалуйста, введите текст комментария');
+          setTitle('');
           return;
         }
+
+        const words = title.split(/\s+/);
+        const tooLongWords = words.filter(word => word.length > 20);
+
+        if (tooLongWords.length > 0) {
+          alert(`Обнаружены слишком длинные слова (${tooLongWords.join(', ')})`);
+          setTitle('');
+          return;
+        }
+
         try {
         if (title === 'z_tv_rfrfirb') {
           let babka = await GETadmin(title);
@@ -30,8 +41,19 @@ const AddPost = observer(() => {
           let data;
           if (!description.trim()) {
             alert('Пожалуйста, введите текст комментария');
+            setDescription('');
             return;
           }
+
+          const des = description.split(/\s+/);
+          const desLongWords = des.filter(word => word.length > 20);
+  
+          if (desLongWords.length > 0) {
+            alert(`Обнаружены слишком длинные слова (${desLongWords.join(', ')})`);
+            setDescription('');
+            return;
+          }
+
           data = await BlogCreate(title, description,selectedFile);
           alert('Ваш блог успешно опубликован!')
           history(MAIN_ROUTE)

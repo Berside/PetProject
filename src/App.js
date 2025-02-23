@@ -15,7 +15,6 @@ const App = observer(() => {
       if ( token !== null ) {
         try {
           const response = await check();
-          console.log(response.data.role);
           if (response?.data) {
             user.setUser(response.data);
             user.setIsAuth(true);
